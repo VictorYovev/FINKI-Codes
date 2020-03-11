@@ -1,1 +1,5 @@
-# FINKI-Codes
+-Вештачка Интелигенција
+  *Gradebook
+  *Minesweeper
+ 
+
