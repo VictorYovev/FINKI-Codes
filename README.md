@@ -7,7 +7,7 @@
 
 
  ### **Оперативни системи**
-  2. **'File Manager, Java I/O'**&nbsp;
+  1. **`File Manager, Java I/O`**&nbsp;
      - JpgOrPng
      - LargestFile
      - Vowels
