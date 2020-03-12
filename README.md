@@ -4,3 +4,10 @@
      - Gradebook
      - Minesweeper
      - Pacman
+
+
+ ### **Оперативни системи**
+  2. **'File Manager, Java I/O'**&nbsp;
+     - JpgOrPng
+     - LargestFile
+     - Vowels
