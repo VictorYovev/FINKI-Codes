@@ -2,8 +2,6 @@ import random
 
 
 class Game:
-    first, first1 = -1, -1
-
     def __init__(self, rows, columns, matrix):
         self.rows = rows
         self.columns = columns
@@ -12,9 +10,6 @@ class Game:
         for i in range(rows):
             for j in range(columns):
                 if matrix[i][j] == '.':
-                    if self.first == -1:
-                        self.first = i
-                        self.first1 = j
                     self.dots += 1
 
 
@@ -34,28 +29,45 @@ class Pacman:
         self.player = player
         self.game = game
 
-    def play_game(self):
-        xx, yy = 0, 0
-        self.player.x = self.game.first
-        self.player.y = self.game.first1
-        flag = False
-        while self.game.dots != 0:
-
-            if self.game.matrix[self.player.x][self.player.y] == '.':
-                self.game.dots -= 1
-                self.game.matrix[self.player.x][self.player.y] = '!'
-
-            self.random_moves.append((list([self.player.x, self.player.y])))
-
-            if flag:
-                xx = random.randint(self.player.x - 1 if self.player.x - 1 >= 0 else self.player.x,
-                                    self.player.x + 1 if self.player.x + 1 < self.game.rows else self.player.x)
+    def findPosition(self):
+        possible_positions = []
+        whatever_positions = []
+        if self.player.x + 1 < self.game.rows:
+            if self.game.matrix[self.player.x + 1][self.player.y] == '.':
+                possible_positions.append(list([self.player.x + 1, self.player.y]))
             else:
-                yy = random.randint(self.player.y - 1 if self.player.y - 1 >= 0 else self.player.y,
-                                    self.player.y + 1 if self.player.y + 1 < self.game.columns else self.player.y)
+                whatever_positions.append(list([self.player.x + 1, self.player.y]))
+        if self.player.x - 1 >= 0:
+            if self.game.matrix[self.player.x - 1][self.player.y] == '.':
+                possible_positions.append(list([self.player.x - 1, self.player.y]))
+            else:
+                whatever_positions.append(list([self.player.x - 1, self.player.y]))
+        if self.player.y + 1 < self.game.columns:
+            if self.game.matrix[self.player.x][self.player.y + 1] == '.':
+                possible_positions.append(list([self.player.x, self.player.y + 1]))
+            else:
+                whatever_positions.append(list([self.player.x, self.player.y + 1]))
+        if self.player.y - 1 >= 0:
+            if self.game.matrix[self.player.x][self.player.y - 1] == '.':
+                possible_positions.append(list([self.player.x, self.player.y - 1]))
+            else:
+                whatever_positions.append(list([self.player.x, self.player.y - 1]))
 
-            flag = not flag
-            self.player.move(tuple((xx, yy)))
+        if len(possible_positions) != 0:
+            return possible_positions[random.randint(0, len(possible_positions) - 1)]
+        else:
+            return whatever_positions[random.randint(0, len(whatever_positions) - 1)]
+
+    def play_game(self):
+        if self.game.dots == 0:
+            return 'Nothing to do here'
+        while self.game.dots != 0:
+            position = self.findPosition()
+            if self.game.matrix[position[0]][position[1]] == '.':
+                self.game.dots -= 1
+                self.game.matrix[self.player.x][self.player.y] = '#'
+            self.random_moves.append((list([position[0], position[1]])))
+            self.player.move(tuple((position[0], position[1])))
         return self.random_moves
 
 
@@ -68,4 +80,8 @@ for each in range(r):
 gm = Game(r, c, pacman)
 pl = Player()
 pacman = Pacman(pl, gm)
-print(*(pacman.play_game()), sep='\n')
+result = pacman.play_game()
+if result != 'Nothing to do here':
+    print(*result, sep='\n')
+else:
+    print(result)
