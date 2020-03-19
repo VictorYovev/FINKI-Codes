@@ -65,7 +65,7 @@ class Pacman:
             position = self.findPosition()
             if self.game.matrix[position[0]][position[1]] == '.':
                 self.game.dots -= 1
-                self.game.matrix[self.player.x][self.player.y] = '#'
+            self.game.matrix[position[0]][position[1]] = '#'
             self.random_moves.append((list([position[0], position[1]])))
             self.player.move(tuple((position[0], position[1])))
         return self.random_moves
