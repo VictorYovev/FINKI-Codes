@@ -3,6 +3,8 @@
   1. **`Вовед во Python`**&nbsp;
      - Gradebook
      - Minesweeper
+     - Pacman  
+  2. **`Неинформирано пребарување`**&nbsp;
      - Pacman
 
 
