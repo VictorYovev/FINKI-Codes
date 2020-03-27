@@ -1,11 +1,11 @@
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 
 public class CountSeven {
 
-    public static int NUM_RUNS = 1000;
+    public static int NUM_RUNS = 100;
     /**
      * TODO: definirajte gi potrebnite elementi za sinhronizacija
      */
@@ -35,14 +35,10 @@ public class CountSeven {
         HashSet<Thread> threads = new HashSet<Thread>();
         Scanner s = new Scanner(System.in);
         int total = s.nextInt();
-        Random random = new Random();
-        int correct = 0;
         for (int i = 0; i < NUM_RUNS; i++) {
             int[] data = new int[total];
             for (int j = 0; j < total; j++) {
-                data[j] = random.nextInt(10);
-                if (data[j] == 7)
-                    correct++;
+                data[j] = s.nextInt();
             }
             Counter c = new Counter(data);
             threads.add(c);
@@ -56,7 +52,6 @@ public class CountSeven {
             t.join();
         }
         System.out.println(count);
-        System.out.println((correct == count) ? "Great, u made a synchronization" : "Oh buddy u are something wrong");
 
 
     }
@@ -70,11 +65,7 @@ public class CountSeven {
         }
 
         public void count(int[] data) throws InterruptedException {
-            int count1 = 0;
-            for (int i = 0; i < data.length; i++) {
-                if (data[i] == 7)
-                    count1++;
-            }
+            int count1 = (int) Arrays.stream(data).filter(num -> num == 7).count();
             lock.acquire();
             count += count1;
             lock.release();
