@@ -19,7 +19,8 @@ class BlockingQueue<T> {
     }
 
     public void enqueue(T item) throws InterruptedException {
-        queueEmpty.acquire();
+        if (index >= capacity)
+            queueEmpty.acquire();
         queueLock.acquire();
         if (index < capacity) {
             contents[index++] = item;
@@ -31,6 +32,7 @@ class BlockingQueue<T> {
     }
 
     public T dequeue() throws InterruptedException {
+
         queueLock.acquire();
         T item = null;
         if (index != 0) {
@@ -43,7 +45,10 @@ class BlockingQueue<T> {
         }
         if (item != null)
             System.out.println("You remove " + item + " from queue");
-        queueEmpty.release();
+
+        if (index == 0)
+            queueEmpty.release();
+
         queueLock.release();
         return item;
     }
@@ -83,6 +88,10 @@ class ThreadDequeue implements Runnable {
 
         for (int i = 0; i < 100; i++) {
             try {
+                if (queue.index == 0) {
+                    i--;
+                    continue;
+                }
                 queue.dequeue();
             } catch (InterruptedException e) {
                 e.printStackTrace();
