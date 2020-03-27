@@ -14,3 +14,8 @@
      - JpgOrPng
      - LargestFile
      - Vowels
+  2. **`Threads, Synchronization`**&nbsp;
+     - BlockingQueue
+     - CountSeven
+     - Printer
+     - TwoThreads
