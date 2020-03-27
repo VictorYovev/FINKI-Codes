@@ -88,9 +88,11 @@ class ThreadDequeue implements Runnable {
 
         for (int i = 0; i < 100; i++) {
             try {
-                if (queue.index == 0) {
-                    i--;
-                    continue;
+                synchronized (this) {
+                    if (queue.index == 0) {
+                        i--;
+                        continue;
+                    }
                 }
                 queue.dequeue();
             } catch (InterruptedException e) {
