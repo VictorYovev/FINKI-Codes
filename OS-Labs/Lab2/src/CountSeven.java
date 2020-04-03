@@ -1,11 +1,12 @@
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 
 public class CountSeven {
 
-    public static int NUM_RUNS = 100;
+    public static int NUM_RUNS = 1000;
     /**
      * TODO: definirajte gi potrebnite elementi za sinhronizacija
      */
@@ -32,13 +33,14 @@ public class CountSeven {
 
         init();
 
-        HashSet<Thread> threads = new HashSet<Thread>();
+        HashSet<Thread> threads = new HashSet<>();
         Scanner s = new Scanner(System.in);
         int total = s.nextInt();
+        Random random = new Random();
         for (int i = 0; i < NUM_RUNS; i++) {
             int[] data = new int[total];
             for (int j = 0; j < total; j++) {
-                data[j] = s.nextInt();
+                data[j] = random.nextInt(15);
             }
             Counter c = new Counter(data);
             threads.add(c);

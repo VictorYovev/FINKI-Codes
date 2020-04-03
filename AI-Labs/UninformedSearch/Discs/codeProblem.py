@@ -52,29 +52,38 @@ class Problem:
         :rtype: dict
         """
         possible_actions = dict()
-        now_state = list(state)
+        now_state = sorted(list(state))
+        forbidden = [x[0] for x in now_state]
         for disc in range(self.discs):
             new_state = copy.deepcopy(now_state)
-            # Levo1: Disk i
-            l1 = L1(now_state[disc], now_state)
-            if now_state[disc] != l1:
-                new_state[disc] = l1
-                possible_actions['L1: Disk %d' % (disc + 1)] = tuple(new_state)
             # Desno1: Disk i
-            d1 = D1(self.length, now_state[disc], now_state)
-            if now_state[disc] != d1:
-                new_state[disc] = d1
-                possible_actions['D1: Disk %d' % (disc + 1)] = tuple(new_state)
-            # Levo2: Disk i
-            l2 = L2(now_state[disc], now_state)
-            if now_state[disc] != l2:
-                new_state[disc] = l2
-                possible_actions['L2: Disk %d' % (disc + 1)] = tuple(new_state)
+            d1 = D1(self.length, list(now_state[disc])[0], forbidden)
+            if list(now_state[disc])[0] != d1:
+                tmp = list(now_state[disc])
+                tmp[0] = d1
+                new_state[disc] = tuple(tmp)
+                possible_actions['D1: Disk %d' % (tmp[1])] = tuple(new_state)
             # Desno2 : Disk i
-            d2 = D2(self.length, now_state[disc], now_state)
-            if now_state[disc] != d2:
-                new_state[disc] = d2
-                possible_actions['D2: Disk %d' % (disc + 1)] = tuple(new_state)
+            d2 = D2(self.length, list(now_state[disc])[0], forbidden)
+            if list(now_state[disc])[0] != d2:
+                tmp = list(now_state[disc])
+                tmp[0] = d2
+                new_state[disc] = tuple(tmp)
+                possible_actions['D2: Disk %d' % (tmp[1])] = tuple(new_state)
+            # Levo1: Disk i
+            l1 = L1(list(now_state[disc])[0], forbidden)
+            if list(now_state[disc])[0] != l1:
+                tmp = list(now_state[disc])
+                tmp[0] = l1
+                new_state[disc] = tuple(tmp)
+                possible_actions['L1: Disk %d' % (tmp[1])] = tuple(new_state)
+            # Levo2: Disk i
+            l2 = L2(list(now_state[disc])[0], forbidden)
+            if list(now_state[disc])[0] != l2:
+                tmp = list(now_state[disc])
+                tmp[0] = l2
+                new_state[disc] = tuple(tmp)
+                possible_actions['L2: Disk %d' % (tmp[1])] = tuple(new_state)
 
         return possible_actions
 
@@ -108,7 +117,9 @@ class Problem:
         :return: дали дадената состојба е целна состојба
         :rtype: bool
         """
-        return state == self.goal
+        new_state = sorted(list(state))
+
+        return tuple(new_state) == self.goal
 
     def path_cost(self, c, state1, action, state2):
         """Врати ја цената на решавачкиот пат кој пристигнува во состојбата
@@ -544,8 +555,8 @@ def uniform_cost_search(problem):
 if __name__ == '__main__':
     N = int(input())
     L = int(input())
-    begin = tuple(x + 1 for x in range(N))
-    end = tuple(x for x in range(L, L - N, -1))
+    begin = tuple((x + 1, x + 1) for x in range(N))
+    end = tuple((x + 1, L - x) for x in range(L - N, L))
     problem = Problem(N, L, begin, end)
     result = breadth_first_graph_search(problem)
     print(result.solution())
