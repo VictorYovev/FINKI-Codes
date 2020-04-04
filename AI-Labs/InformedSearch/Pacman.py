@@ -327,14 +327,14 @@ class Problem:
     def h(self, node):
         closest = 0
         now_state = list(node.state)
-        # for x in now_state:
-        #     if x is tuple and abs(now_state[0] - x[0]) + abs(now_state[1] - x[1]) < closest:
-        #         closest = abs(now_state[0] - x[0]) + abs(now_state[1] - x[1])
-        # return closest + (len(now_state) - 4)
         for x in now_state:
-            if x is tuple:
-                closest += abs(now_state[0] - x[0]) + abs(now_state[1] - x[1])
-        return closest + (len(now_state) - 3)
+            if x is tuple and abs(now_state[0] - x[0]) + abs(now_state[1] - x[1]) > closest:
+                closest = abs(now_state[0] - x[0]) + abs(now_state[1] - x[1])
+        return closest + (len(now_state) - 4)
+        # for x in now_state:
+        #     if x is tuple:
+        #         closest += abs(now_state[0] - x[0]) + abs(now_state[1] - x[1])
+        # return closest + (len(now_state) - 3)
 
 
 """

@@ -235,7 +235,8 @@ class Problem:
         :return: листа на акции
         :rtype: list
         """
-        return self.successor(state).keys()
+        now = sorted(state)
+        return self.successor(now).keys()
 
     def result(self, state, action):
         """За дадена состојба state и акција action, врати ја состојбата
@@ -245,7 +246,8 @@ class Problem:
         :param action: дадена акција
         :return: резултантна состојба
         """
-        return self.successor(state)[action]
+        now = sorted(state)
+        return self.successor(now)[action]
 
     def goal_test(self, state):
         """Врати True ако state е целна состојба. Даденава имплементација
@@ -257,7 +259,7 @@ class Problem:
         :return: дали дадената состојба е целна состојба
         :rtype: bool
         """
-        new_state = sorted(list(state))
+        new_state = sorted(list(state), key=lambda x: x[1], reverse=True)
 
         return tuple(new_state) == self.goal
 
@@ -290,11 +292,11 @@ class Problem:
         raise NotImplementedError
 
     def h(self, node):
-        heuristic = 0
-        new = sorted(node.state, key=lambda x: x[1])
+        heuristic = 20
+        new = sorted(node.state, key=lambda x: x[1], reverse=True)
         for x, y in zip(new, self.goal):
-            if x != y:
-                heuristic += 1
+            if abs(x[0] - y[0]) < heuristic:
+                heuristic = abs(x[0] - y[0])
         return heuristic
 
 
