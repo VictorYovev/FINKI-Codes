@@ -36,26 +36,26 @@ class DiningPhilosophers {
     }
 
 
-    void eat(int id) throws InterruptedException {
-        // TODO: 3/29/20 Synchronize
-        lock.acquire();
-            forks[id].acquire();
-            System.out.println("Philosopher " + (id + 1) + " " + Thread.currentThread().getId() + " picked up the LEFT fork");
-            forks[(id + 1) % forks.length].acquire();
-            System.out.println("Philosopher " + (id + 1) + " " + Thread.currentThread().getId() + " picked up the RIGHT fork -> eating");
-            forks[id].release();
-            System.out.println("Philosopher " + (id + 1) + " " + Thread.currentThread().getId() + " put down the LEFT fork");
-            forks[(id + 1) % forks.length].release();
-            System.out.println("Philosopher " + (id + 1) + " " + Thread.currentThread().getId() + " put down the RIGHT fork -> thinking");
-        lock.release();
-    }
-
     static void runPhilosopher(DiningPhilosophers dp, int id) {
         try {
             dp.lifecycleOfPhilosopher(id);
-        } catch (InterruptedException ie) {
+        } catch (InterruptedException ignored) {
 
         }
+    }
+
+    void eat(int id) throws InterruptedException {
+        // TODO: 3/29/20 Synchronize
+        lock.acquire();
+        forks[id].acquire();
+        System.out.println("Philosopher " + (id + 1) + " " + Thread.currentThread().getId() + " picked up the LEFT fork");
+        forks[(id + 1) % forks.length].acquire();
+        System.out.println("Philosopher " + (id + 1) + " " + Thread.currentThread().getId() + " picked up the RIGHT fork -> eating");
+        forks[id].release();
+        System.out.println("Philosopher " + (id + 1) + " " + Thread.currentThread().getId() + " put down the LEFT fork");
+        forks[(id + 1) % forks.length].release();
+        System.out.println("Philosopher " + (id + 1) + " " + Thread.currentThread().getId() + " put down the RIGHT fork -> thinking");
+        lock.release();
     }
 
     public static void runTest() throws InterruptedException {
