@@ -22,3 +22,9 @@
      - CountSeven
      - Printer
      - TwoThreads
+  3. **`Synchronization`**&nbsp;
+     - BarberShop
+     - H20
+     - Philosophers
+     - Singleton
+     - TancSoStudentite
