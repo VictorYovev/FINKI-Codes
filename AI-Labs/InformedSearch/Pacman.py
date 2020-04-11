@@ -1,4 +1,5 @@
 import bisect
+
 from sys import maxsize as infinity
 
 
