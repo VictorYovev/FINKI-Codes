@@ -34,3 +34,9 @@
      - Philosophers
      - Singleton
      - TancSoStudentite
+  7. **`Unix Command Procedures`**&nbsp;
+     - Menu
+     - Commands
+     - SortArguments
+     - Calculator
+     - FullMinute
